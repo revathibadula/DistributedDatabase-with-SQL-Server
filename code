@@ -1,0 +1,100 @@
+/*TO CREATE STORED PROCEDURE*/
+/(1)Name: *dbo.spGetAlbum*/
+USE [random]
+GO
+
+/****** Object:  StoredProcedure [dbo].[spGetAlbum]    Script Date: 12/5/2017 1:25:55 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spGetAlbum]
+AS
+BEGIN
+	select id, Name from Album
+END
+GO
+--------------------------------------------------------------------------------
+/(2)Name: *dbo.spGetAlbumBynameAndid*/
+
+USE [random]
+GO
+
+/****** Object:  StoredProcedure [dbo].[spGetAlbumBynameAndid]    Script Date: 12/5/2017 1:28:36 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+Create Proc [dbo].[spGetAlbumBynameAndid]
+@name nvarchar(100),
+@id int
+as
+	Begin
+		select year, name, id from Album 
+
+End
+
+select * from Album
+GO
+------------------------------------------------------------------------------
+/* CREATING STORED PROCEDURES WITH INPUT PARAMETERS*/
+Create Procedure spGetAlbumBynameAndid 
+@name nvarchar(50),
+@id int
+as
+Begin
+  Select name, id from Album Where name = @name and id = @id
+End
+-------------------------------------------------------------------------------
+/*TO ALTER A STORED PROCEDURE*/
+
+Alter Procedure spGetAlbumBynameAndid 
+@name nvarchar(50),
+@id int
+as
+Begin
+  Select name, id from Album Where name = @name and gender = @gender order by name
+End
+--------------------------------------------------------------------------------
+/*Create a dummy table-valued function to use linked server*/
+CREATE FUNCTION [dbo].[random_TVF]
+(
+)
+RETURNS @returntable Album
+(
+ id int,
+ name nvarchar(50)
+ )
+AS
+BEGIN
+ RETURN
+END
+------------------------------------------------------------------------------------
+/*TO DROP A STORED PROCEDURE*/
+USE [random]
+GO
+create procedure [dbo].[spGetAlbum]
+  @id int
+as
+begin  
+ delete [dbo].[Album]
+if @@rowcount = 0
+    if @@microsoftversion>0x07320000
+        exec sp_MSreplraiserror 20598
+end
+--------------------------------------------------------------------------------
+/*Code to sp_scriptpublicationcustomprocs stored procedure*/
+USE random
+GO
+EXEC sp_scriptpublicationcustomprocs @publication='PUBLICATION'
+
+--------------------------------------------------------------------------------
+
+
+
+
+
